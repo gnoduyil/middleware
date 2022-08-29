@@ -1,39 +1,60 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<configuration status="warn" monitorInterval="5">
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="instruction-proxy-svr" packages="">
     <properties>
-        <property name="LOG_HOME">logs</property>
+        <property name="LOG_HOME">logs/samples_logs</property>
     </properties>
 
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] [%-5level] %c{36}:%L --- %m%n" />
-        </Console>
-
-        <File name="file" fileName="${LOG_HOME}/myfile.log">
-            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] %l %c{36} - %m%n" />
-        </File>
-
-        <RandomAccessFile name="accessFile" fileName="${LOG_HOME}/myAcclog.log">
-            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] %l %c{36} - %m%n" />
-        </RandomAccessFile>
-
-        <RollingFile name="rollingFile" fileName="${LOG_HOME}/myrollog.log"
-                     filePattern="E:/logs/$${date:yyyy-MM-dd}/myrollog-%d{yyyy-MM-dd-HH-mm}-%i.log">
-            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" />
-            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] %l %c{36} - %msg%n" />
+        <console name="Console" target="SYSTEM_OUT">
+            <!--输出日志的格式-->
+<!--            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %p [%X{traceId}] %c{1.} [%t] %m%n"/>-->
+            <JsonLayout></JsonLayout>
+        </console>
+        <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${LOG_HOME}/server_info.log"
+                                 immediateFlush="false"
+                                 filePattern="${LOG_HOME}/server_info-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %p [%X{traceId}] %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
             <Policies>
-                <OnStartupTriggeringPolicy />
-                <SizeBasedTriggeringPolicy size="10 MB" />
-                <TimeBasedTriggeringPolicy />
+                <TimeBasedTriggeringPolicy/>
             </Policies>
-            <DefaultRolloverStrategy max="30" />
-        </RollingFile>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="RollingRandomAccessFileError" fileName="${LOG_HOME}/server_error.log"
+                                 immediateFlush="false"
+                                 filePattern="${LOG_HOME}/server_error-%d{yyyy-MM-dd}.log">
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %p [%X{traceId}] %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="socketio" fileName="${LOG_HOME}/socketio.log" immediateFlush="false"
+                                 filePattern="${LOG_HOME}/socketio-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="7">
+                <Delete basePath="${LOG_HOME}/" maxDepth="1">
+                    <IfFileName glob="socketio-*.log"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
 
     </Appenders>
-
     <Loggers>
-        <Root level="trace">
-            <AppenderRef ref="Console" />
+        <Root level="info" includeLocation="false">
+            <AppenderRef ref="RollingRandomAccessFile"/>
+            <AppenderRef ref="RollingRandomAccessFileError"/>
+            <AppenderRef ref="Console"/>
         </Root>
     </Loggers>
-</configuration>
+</Configuration>
