@@ -11,5 +11,13 @@ public class MdcTestUtil {
         MDC.put("userId", "12345678910");
         MDC.put("roomId", "100001");
         MDC.put("sessionId", UUID.randomUUID().toString().replace("-", ""));
+
+        CommonLog log = CommonLog.CommonLogBuilder.aCommonLog()
+                .withSessionId(UUID.randomUUID().toString().replace("-", ""))
+                .withTraceId(UUID.randomUUID().toString().replace("-", ""))
+                .withUserId("a123456")
+                .build();
+
+
     }
 }
