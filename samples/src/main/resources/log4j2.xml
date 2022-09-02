@@ -7,8 +7,8 @@
     <Appenders>
         <console name="Console" target="SYSTEM_OUT">
             <!--输出日志的格式-->
-<!--            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %p [%X{traceId}] %c{1.} [%t] %m%n"/>-->
-            <JsonLayout></JsonLayout>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %p %c{1.} [%t] traceId:%X{traceId} sessionId:%X{sessionId} roomId:%X{roomId} userId:%X{userId} %m%n"/>
+<!--            <JsonLayout></JsonLayout>-->
         </console>
         <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${LOG_HOME}/server_info.log"
                                  immediateFlush="false"

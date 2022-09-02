@@ -1,12 +1,18 @@
 package org.uncertaintyman.logtest;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
-import org.apache.logging.log4j.spi.ThreadContextMap;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.spi.DefaultThreadContextMap;
+import org.apache.logging.log4j.spi.ThreadContextMap;
+
+/**
+ * @author Jerry Lee (oldratlee at gmail dot com)
+ * @see DefaultThreadContextMap
+ */
 public class TtlThreadContextMap implements ThreadContextMap {
     private final ThreadLocal<Map<String, String>> localMap;
 
