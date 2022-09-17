@@ -18,6 +18,7 @@ public class MdcTestUtil {
                 .withUserId("a123456")
                 .build();
 
+        MDC.put("commonLog", log.toString());
 
     }
 }

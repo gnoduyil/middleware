@@ -36,7 +36,7 @@ public class CommonLog {
 
     @Override
     public String toString() {
-        return String.format("traceId:%s sessionId:$s userId$s", this.traceId, this.sessionId, this.userId);
+        return String.format(" traceId:%s sessionId:%s userId:%s ", this.traceId, this.sessionId, this.userId);
     }
 
     public static final class CommonLogBuilder {
